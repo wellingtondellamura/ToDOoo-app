@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <form id="frm">
+        <div>
+            <label for="name">Nome</label>
+            <input type="text" id="inputname" required="true">
+        </div>
+        
+        <div>   
+            <label for="email">E-mail</label>
+            <input type="email" id="inputemail">
+        </div>
+        
+        <div>
+            <label for="password">Senha</label>
+            <input type="password" id="inputpassword">
+        </div>
+        <input type="button" id='btn' value="Registrar-se">
+    </form>
+    <div id='messages' style="border: thin black solid; "></div>
+    <script>
+        var n = document.getElementById('inputname');
+        var e = document.getElementById('inputemail');
+        var p = document.getElementById('inputpassword');
+        var b = document.getElementById('btn');
+        var m = document.getElementById('messages');
+
+        b.addEventListener('click', function(){
+            var user = {
+                "name"  : n.value,
+                "email" : e.value,
+                "password" : p.value
+            }; 
+            var myheaders = new Headers({
+                'Content-Type': 'application/json',
+                'Accept' : 'application/json'
+            });
+
+ fetch('http://localhost:8000/api/register', {
+    method: 'post',
+    headers: myheaders,
+    body: JSON.stringify(user)
+  }).then(function(response) {
+    response.json().then(function(data){
+    	m.innerText = data.message;
+    });
+  }).catch(function(error) {
+    m.innerText = error;
+  });
+
+            m.innerText = 'aguardando...';
+
+        });
+    </script>
+
+</body>
+</html>
